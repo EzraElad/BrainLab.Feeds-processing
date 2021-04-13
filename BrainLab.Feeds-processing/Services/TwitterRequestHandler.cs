@@ -10,12 +10,12 @@ namespace BrainLab.Feeds_processing.Services
 {
     public class TwitterRequestHandler : IRequestHandler<RequestModel>
     {
-        public void Handle(RequestModel requestModel)
+        public string Handle(RequestModel requestModel)
         {
             throw new NotImplementedException();
         }
 
-        public void ToObject(RequestModel requestModel)
+        public string ToObject(RequestModel requestModel)
         {
             throw new NotImplementedException();
         }

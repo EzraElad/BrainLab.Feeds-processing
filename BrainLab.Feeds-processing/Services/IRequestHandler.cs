@@ -9,8 +9,8 @@ namespace BrainLab.Feeds_processing.Services
 {
     public interface IRequestHandler<T>
     {
-        void Handle(T requestModel);
+        string Handle(T requestModel);
 
-        void ToObject(T requestModel);
+        string ToObject(T requestModel);
     }
 }

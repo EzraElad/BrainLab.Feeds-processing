@@ -17,7 +17,7 @@ namespace BrainLab.Feeds_processing.Controllers
     {
         private readonly IRequestHandler<RequestModel> _facebookHandler;
         private readonly IRequestHandler<RequestModel> _twitterHandler;
-        public Dictionary<string, Action<RequestModel>> handlerDick = new Dictionary<string, Action<RequestModel>>();
+        public Dictionary<string, IRequestHandler<RequestModel>> handlerDick = new Dictionary<string, IRequestHandler<RequestModel>>();
         public FeedsController(IRequestHandler<RequestModel> facebookHandler, IRequestHandler<RequestModel> twitterHandler)
         {
             _facebookHandler = facebookHandler;
