@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using BrainLab.Feeds_processing.Helpers.IO;
 using BrainLab.Feeds_processing.Models;
 using BrainLab.Feeds_processing.Models.Facebook;
 using BrainLab.Feeds_processing.Models.Twitter;
@@ -31,9 +32,13 @@ namespace BrainLab.Feeds_processing
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<IRequestHandler<RequestModel>, FacebookRequestHandler>();
-            services.AddScoped<IRequestHandler<RequestModel>, TwitterRequestHandler>();
+            services.AddScoped<IRequestHandler<FacebookModel>, FacebookRequestHandler>();
+            services.AddScoped<IRequestHandler<TwitterModel>, TwitterRequestHandler>();
+            //services.AddScoped<IRequestHandler<RequestModel>, RequestHandler>();
+
+            services.AddScoped<IHelperIO, HelperIO>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

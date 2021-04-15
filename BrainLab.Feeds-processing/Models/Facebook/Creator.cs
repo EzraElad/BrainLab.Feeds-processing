@@ -9,6 +9,6 @@ namespace BrainLab.Feeds_processing.Models.Facebook
 {
     public class Creator : UserBase
     {
-        public string Email { get; set; }
+        public string Mail { get; set; }
     }
 }

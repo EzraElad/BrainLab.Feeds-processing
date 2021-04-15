@@ -1,4 +1,5 @@
-﻿using BrainLab.Feeds_processing.Models;
+﻿using AutoMapper;
+using BrainLab.Feeds_processing.Models;
 using BrainLab.Feeds_processing.Models.Facebook;
 using BrainLab.Feeds_processing.Models.Twitter;
 using BrainLab.Feeds_processing.Services;
@@ -15,16 +16,24 @@ namespace BrainLab.Feeds_processing.Controllers
     [Route("[controller]")]
     public class FeedsController : ControllerBase
     {
-        private readonly IRequestHandler<RequestModel> _facebookHandler;
-        private readonly IRequestHandler<RequestModel> _twitterHandler;
-        public Dictionary<string, IRequestHandler<RequestModel>> handlerDick = new Dictionary<string, IRequestHandler<RequestModel>>();
-        public FeedsController(IRequestHandler<RequestModel> facebookHandler, IRequestHandler<RequestModel> twitterHandler)
+        private readonly IRequestHandler<FacebookModel> _facebookHandler;
+        private readonly IRequestHandler<TwitterModel> _twitterHandler;
+        private readonly IMapper _mapper;
+        private readonly IRequestHandler<RequestModel> _requestHandler;
+        public Dictionary<string, object> handlerDick = new Dictionary<string, object>();
+        public FeedsController(IRequestHandler<FacebookModel> facebookHandler, IRequestHandler<TwitterModel> twitterHandler, IMapper mapper)
         {
             _facebookHandler = facebookHandler;
             _twitterHandler = twitterHandler;
+            _mapper = mapper;
             handlerDick.Add("facebook", _facebookHandler);
             handlerDick.Add("twitter", _twitterHandler);
         }
+
+        //public FeedsController(IRequestHandler<RequestModel> requestHandler)
+        //{
+        //    _requestHandler = requestHandler;
+        //}
         /* 
             Create a reflaction:
             handlers = {
@@ -37,6 +46,7 @@ namespace BrainLab.Feeds_processing.Controllers
         public IActionResult PostNotification(RequestModel request, [FromQuery] string configDirectory )
         //public IActionResult PostNotification([FromBody] string requestModel)
         {
+            ServiceResponse<string> response = new ServiceResponse<string>();
             // check the config directory with env veriable
 
             // Parses the json 
@@ -45,11 +55,20 @@ namespace BrainLab.Feeds_processing.Controllers
 
             string source = request.Source.ToLower();
 
-            //handlerDick["facebook"];
+            // map the object in each time and than create a dictionary
+            if(source == "facebook")
+            {
+                FacebookModel fbModel = _mapper.Map<FacebookModel>(request);
+                _facebookHandler.Handle(fbModel, configDirectory);
+            }
+            else if(source == "twitter")
+            {
+                TwitterModel twitterModel = _mapper.Map<TwitterModel>(request);
+                _twitterHandler.Handle(twitterModel, configDirectory);
+            }
+            
 
-            return Ok(handlerDick[source].Handle(request));
-            _facebookHandler.Handle(request);
-
+            //return Ok(_requestHandler.Handle(request, configDirectory));
             return Ok();
         }
     }

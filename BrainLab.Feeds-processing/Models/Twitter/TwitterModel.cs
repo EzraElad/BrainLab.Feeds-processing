@@ -14,6 +14,6 @@ namespace BrainLab.Feeds_processing.Models.Twitter
         public string Source { get; set; }
         public string CreatedAt { get; set; }
         public DateTime RecivedAt { get; set; } = DateTime.Now;
-        public List<Tweet> Posts { get; set; }
+        public List<Tweet> Tweets { get; set; }
     }
 }

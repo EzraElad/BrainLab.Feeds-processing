@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace BrainLab.Feeds_processing.Services
 {
-    public class TwitterRequestHandler : IRequestHandler<RequestModel>
+    public class TwitterRequestHandler : IRequestHandler<TwitterModel>
     {
-        public string Handle(RequestModel requestModel)
+        public string Handle(TwitterModel requestModel, string path)
         {
             throw new NotImplementedException();
         }
 
-        public string ToObject(RequestModel requestModel)
+        public string ToObject(TwitterModel requestModel)
         {
             throw new NotImplementedException();
         }
