@@ -10,6 +10,6 @@ namespace BrainLab.Feeds_processing.Helpers.IO
         bool IsDirectoryExists(string path);
         int HighestNumberOfDirectories(string path);
         string CreateNewDirectory(string path);
-        void CreateJson(string path, string json, string dirNumber);
+        void CreateJson(string path, string json, string dirNumber, string skinyGuid , bool isNotification);
     }
 }

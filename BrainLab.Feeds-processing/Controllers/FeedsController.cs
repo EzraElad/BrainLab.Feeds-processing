@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BrainLab.Feeds_processing.Helpers.Generic;
 using BrainLab.Feeds_processing.Models;
 using BrainLab.Feeds_processing.Models.Facebook;
 using BrainLab.Feeds_processing.Models.Twitter;
@@ -20,7 +21,10 @@ namespace BrainLab.Feeds_processing.Controllers
         private readonly IRequestHandler<TwitterModel> _twitterHandler;
         private readonly IMapper _mapper;
         private readonly IRequestHandler<RequestModel> _requestHandler;
-        public Dictionary<string, object> handlerDick = new Dictionary<string, object>();
+        public Dictionary<string, dynamic> handlerDick = new Dictionary<string, dynamic>();
+
+        public GenericDictionary genericDic = new GenericDictionary();
+        
         public FeedsController(IRequestHandler<FacebookModel> facebookHandler, IRequestHandler<TwitterModel> twitterHandler, IMapper mapper)
         {
             _facebookHandler = facebookHandler;
@@ -28,6 +32,8 @@ namespace BrainLab.Feeds_processing.Controllers
             _mapper = mapper;
             handlerDick.Add("facebook", _facebookHandler);
             handlerDick.Add("twitter", _twitterHandler);
+            genericDic.Add<IRequestHandler<FacebookModel>>("facebook", _facebookHandler);
+            genericDic.Add<IRequestHandler<TwitterModel>>("facebook", _twitterHandler);
         }
 
         //public FeedsController(IRequestHandler<RequestModel> requestHandler)
@@ -66,9 +72,15 @@ namespace BrainLab.Feeds_processing.Controllers
                 TwitterModel twitterModel = _mapper.Map<TwitterModel>(request);
                 _twitterHandler.Handle(twitterModel, configDirectory);
             }
-            
 
             //return Ok(_requestHandler.Handle(request, configDirectory));
+            return Ok();
+        }
+
+        [HttpPost("CountWords")]
+        public IActionResult CountWords(int num)
+        {
+
             return Ok();
         }
     }

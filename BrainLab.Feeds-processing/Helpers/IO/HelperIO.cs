@@ -9,11 +9,9 @@ namespace BrainLab.Feeds_processing.Helpers.IO
 {
     public class HelperIO : IHelperIO
     {
-        public void CreateJson(string path, string json ,string dirNumber)
+        public void CreateJson(string path, string json ,string dirNumber, string skinyGuid, bool isNotification)
         {
-            Guid guid = Guid.NewGuid();
-            string skinyGuid = Convert.ToBase64String(guid.ToByteArray());
-            File.WriteAllText($@"{path}/{dirNumber}/{skinyGuid}.notification.json", json);
+            File.WriteAllText($@"{path}/{dirNumber}/{skinyGuid}.{(isNotification ? "notification" : "summary")}.json", json);
         }
 
         public string CreateNewDirectory(string path)
