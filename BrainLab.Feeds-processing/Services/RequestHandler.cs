@@ -16,7 +16,7 @@ namespace BrainLab.Feeds_processing.Services
         {
             _config = config;
         }
-        public string Handle(RequestModel requestModel, string path)
+        public ServiceResponse<string> Handle(RequestModel requestModel, string path)
         {
             if(path is null)
             {
@@ -34,10 +34,10 @@ namespace BrainLab.Feeds_processing.Services
                     break;
                 default:
                     Console.WriteLine("Default case");
-                    return "";
+                    throw new KeyNotFoundException();
             }
-            
-            return "";
+
+            return new ServiceResponse<string>();
         }
 
         public string ToObject(RequestModel requestModel)

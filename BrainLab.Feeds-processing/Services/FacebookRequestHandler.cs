@@ -22,12 +22,17 @@ namespace BrainLab.Feeds_processing.Services
             _config = config;
             _helperIO = helperIO;
         }
-        public string Handle(FacebookModel requestModel, string path)
+        public ServiceResponse<string> Handle(FacebookModel requestModel, string path)
         {
+            ServiceResponse<string> response = new ServiceResponse<string>();
             // Break up to couple parts
-            // 1. Do the checks you need => nned to check for the minute check !
+            // 1. Do the checks you need => need to check for the minute check !
             // 2. make the notification.json
             // 3. make the summery.json
+
+            //int newDirectoryName = _helperIO.HighestNumberOfDirectories(path) + 1;
+            //Guid guid = Guid.NewGuid();
+            //string skinyGuid = Convert.ToBase64String(guid.ToByteArray());
 
 
             if (path is null)
@@ -35,25 +40,35 @@ namespace BrainLab.Feeds_processing.Services
                 // default dir = C:\\Users\\Elad Ezra\\Desktop\\Tests\\BL
                 path = String.Concat(_config.GetValue<string>("DefaultDirectory"),$"/{requestModel.Source.ToLower()}");
             }
+            // check if the path is good
 
-            // Checks if there is a dir if not create
+            // Checks if there is a dir && the path is valid - if both true create
             bool isDirectory = _helperIO.IsDirectoryExists(path);
             if (!isDirectory)
             {
-                _helperIO.CreateNewDirectory(path);
+                // if good creates the dir if not return response
+                bool isGoodDirectory = _helperIO.TryCreateNewDirectory(path);
+                if (!isGoodDirectory)
+                {
+                    response.Message = "There is something wrong with the directory";
+                    response.Success = false;
+                    return response;
+                }
             }
 
             // Checks the highest number in the directory and return it
             int newDirectoryName = _helperIO.HighestNumberOfDirectories(path) + 1;
 
             // Create a new dir with the HighestNumber+1 
-            _helperIO.CreateNewDirectory($"{path}/{newDirectoryName}");
+            bool newDirSuccess = _helperIO.TryCreateNewDirectory($"{path}/{newDirectoryName}");
+
             //create inside it the json
             Guid guid = Guid.NewGuid();
             string skinyGuid = Convert.ToBase64String(guid.ToByteArray());
             string json = JsonSerializer.Serialize(requestModel);
             _helperIO.CreateJson(path, json, newDirectoryName.ToString(), skinyGuid, true);
 
+            //CreateNotificationJson(path, requestModel);
 
             // 3. Summery.json part
             // Write a function that sends the content to 
@@ -69,8 +84,8 @@ namespace BrainLab.Feeds_processing.Services
             _helperIO.CreateJson(path, summaryJson, newDirectoryName.ToString(), skinyGuid, false);
 
 
-
-            return "";
+            response.Data = path;
+            return response;
         }
 
         public string ToObject(FacebookModel requestModel)
@@ -80,20 +95,30 @@ namespace BrainLab.Feeds_processing.Services
 
         private int SendFacebookContent(FacebookModel model)
         {
+            List<string> strList = new List<string>();
             // Here we are going to mock an api request logic just to make it work...
             var posts = model.Posts;
             int sum = 0;
+            // TODO: need to check a bunch of stuff!
+
             foreach (var post in posts)
             {
                 // Count word function
+                strList.Add(post.Content);
+                
+
                 sum += CountWords(post.Content);
             }
+
+            // than I send the post request with the strList 
+            // and the service returns my sum
 
             return sum;
         }
 
         private int CountWords(string post)
         {
+            
             return post.Split(' ').Length;
         }
     }

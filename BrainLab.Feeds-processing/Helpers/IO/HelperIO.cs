@@ -14,10 +14,18 @@ namespace BrainLab.Feeds_processing.Helpers.IO
             File.WriteAllText($@"{path}/{dirNumber}/{skinyGuid}.{(isNotification ? "notification" : "summary")}.json", json);
         }
 
-        public string CreateNewDirectory(string path)
+        public bool TryCreateNewDirectory(string path)
         {
-            DirectoryInfo di = Directory.CreateDirectory(path);
-            return $"The directory was created successfully at {Directory.GetCreationTime(path)}";
+            bool success = true;
+            try
+            {
+                DirectoryInfo di = Directory.CreateDirectory(path);
+            }
+            catch(Exception ex)
+            {
+                success = false;
+            }
+            return success;
         }
 
         public int HighestNumberOfDirectories(string path)
@@ -27,7 +35,6 @@ namespace BrainLab.Feeds_processing.Helpers.IO
 
             if(files.Length == 0)
             {
-                this.CreateNewDirectory(string.Concat(path, $"/1"));
                 return 0;
             }
 
