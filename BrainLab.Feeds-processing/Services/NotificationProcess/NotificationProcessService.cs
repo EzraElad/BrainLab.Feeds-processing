@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BrainLab.Feeds_processing.Factory;
+using BrainLab.Feeds_processing.Helpers.Config;
 using BrainLab.Feeds_processing.Helpers.IO;
 using BrainLab.Feeds_processing.Models;
 using BrainLab.Feeds_processing.Models.DTO;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -20,12 +22,14 @@ namespace BrainLab.Feeds_processing.Services
         private readonly IConfiguration _config;
         private readonly IHelperIO _helperIO;
         private readonly IMapper _mapper;
-
-        public NotificationProcessService(IConfiguration config, IHelperIO helperIO, IMapper mapper)
+        private readonly ConfigProvider _configProvider;
+        private static readonly HttpClient client = new HttpClient();
+        public NotificationProcessService(IConfiguration config, IHelperIO helperIO, IMapper mapper, ConfigProvider configProvider)
         {
             _config = config;
             _helperIO = helperIO;
             _mapper = mapper;
+            _configProvider = configProvider;
         }
         public ServiceResponse<string> Handle(RequestModel requestModel, string path)
         {
@@ -35,14 +39,20 @@ namespace BrainLab.Feeds_processing.Services
             // 2. make the summery.json
 
             // NotiFactory inisialize
-            var test = new NotificationFactory(_mapper);
-            var notificationHandler = test.CreateNotificationHandler(requestModel);
-            notificationHandler.ToJson(requestModel);
+            NotificationFactory notificationFactory = new NotificationFactory(_mapper);
+            var notificationHandler = notificationFactory.CreateNotificationHandler(requestModel);
+            string deliveredJson = notificationHandler.ToJson();
+            List<string> stringListToCount = notificationHandler.CreateListString(); 
+
+            // Checks
+            // service.CreateJson
+            // service.CreateSummaryJson
 
             if (path is null)
             {
                 // default dir = C:\\Users\\Elad Ezra\\Desktop\\Tests\\BL
-                path = String.Concat(_config.GetValue<string>("DefaultDirectory"), $"/{requestModel.Source.ToLower()}");
+                path = $"{_configProvider.DefaultDir}/{requestModel.Source.ToLower()}";
+                //path = String.Concat(_config.GetValue<string>("DefaultDirectory"), $"/{requestModel.Source.ToLower()}");
             }
             // check if the path is good
 
@@ -70,7 +80,6 @@ namespace BrainLab.Feeds_processing.Services
             Guid guid = Guid.NewGuid();
             string skinyGuid = Convert.ToBase64String(guid.ToByteArray()).Replace("/", "");
             // Check the source and map to the correct model
-            string deliveredJson = ToJson(requestModel);
             _helperIO.CreateJson(path, deliveredJson, newDirectoryName.ToString(), skinyGuid, true);
 
             //CreateNotificationJson(path, requestModel);
@@ -78,6 +87,7 @@ namespace BrainLab.Feeds_processing.Services
             // 3. Summery.json part
             // Write a function that sends the content to 
             // source , Id , number of words, newDirectoryName => Guid.summary.json
+            //int wordSum = SendToCounter(stringListToCount);
             int wordSum = 0;
             SummaryDto summary = new SummaryDto()
             {
@@ -93,47 +103,17 @@ namespace BrainLab.Feeds_processing.Services
             return response;
         }
 
-        public string ToJson(RequestModel requestModel)
-        {
-            string deliveredJson = String.Empty;
-            switch (requestModel.Source.ToLower())
-            {
-                case "facebook":
-                    FacebookModel FacebookModel = _mapper.Map<FacebookModel>(requestModel);
-                    deliveredJson = JsonSerializer.Serialize(FacebookModel);
-                    break;
-                case "twitter":
-                    TwitterModel TwitterModel = _mapper.Map<TwitterModel>(requestModel);
-                    deliveredJson = JsonSerializer.Serialize(TwitterModel);
-                    break;
-                default:
-                    throw new KeyNotFoundException();
-            }
-            return deliveredJson;
-        }
 
-        public int SendToCounter(RequestModel requestModel)
+        public async Task<int> SendToCounter(List<string> stringList)
         {
-            // Need to prepre List<string>
-            List<string> stringList = new List<string>();
-            switch (requestModel.Source.ToLower())
-            {
-                case "facebook":
-                    foreach (var post in requestModel.Posts)
-                    {
-                        stringList.Add(post.Content);
-                    }
-                    break;
-                case "twitter":
-                    foreach (var tweet in requestModel.Tweets)
-                    {
-                        stringList.Add(tweet.text);
-                    }
-                    break;
-                default:
-                    throw new KeyNotFoundException();
-            }
+            
             // Post the request
+
+            var content = new StringContent(stringList.ToString(), Encoding.UTF8, "application/json");
+            var response = await client.PostAsync("https://localhost:44335/api", content);
+            var responseString = await response.Content.ReadAsStringAsync();
+
+            Console.WriteLine("");
             return CountWords(stringList);
         }
 

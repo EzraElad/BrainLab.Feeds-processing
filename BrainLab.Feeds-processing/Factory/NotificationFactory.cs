@@ -13,7 +13,6 @@ namespace BrainLab.Feeds_processing.Factory
     {
         private readonly IMapper _mapper;
 
-        // should return an INotification Handler
         public NotificationFactory(IMapper mapper)
         {
             _mapper = mapper;
@@ -23,11 +22,11 @@ namespace BrainLab.Feeds_processing.Factory
             string source = request.Source.ToLower();
             if(source == "facebook")
             {
-                return new FacebookHandler(_mapper);
+                return new FacebookHandler(_mapper, request);
             }
             else
             {
-                return new TwitterHandler(_mapper);
+                return new TwitterHandler(_mapper, request);
             }
         }
     }

@@ -13,20 +13,29 @@ namespace BrainLab.Feeds_processing.Handlers
     public class TwitterHandler : INotificationHandler
     {
         private readonly IMapper _mapper;
+        private readonly RequestModel _requestModel;
+        private TwitterModel twitterModel;
 
-        public TwitterHandler(IMapper mapper)
+        public TwitterHandler(IMapper mapper, RequestModel requestModel)
         {
             _mapper = mapper;
+            _requestModel = requestModel;
+            twitterModel = _mapper.Map<TwitterModel>(_requestModel);
         }
 
-        public List<string> CreateListString(RequestModel request)
+        public List<string> CreateListString()
         {
-            throw new NotImplementedException();
+            List<string> stringList = new List<string>();
+            foreach (var item in twitterModel.Tweets)
+            {
+                stringList.Add(item.text);
+            }
+            return stringList;
         }
 
-        public string ToJson(RequestModel request)
+        public string ToJson()
         {
-            TwitterModel twitterModel = _mapper.Map<TwitterModel>(request);
+            //TwitterModel twitterModel = _mapper.Map<TwitterModel>(_requestModel);
             string deliveredJson = JsonSerializer.Serialize(twitterModel);
             return deliveredJson;
         }

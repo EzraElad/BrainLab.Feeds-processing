@@ -13,21 +13,30 @@ namespace BrainLab.Feeds_processing.Handlers
     public class FacebookHandler : INotificationHandler
     {
         private readonly IMapper _mapper;
+        private readonly RequestModel _requestModel;
+        private FacebookModel facebookModel;
 
-        public FacebookHandler(IMapper mapper)
+        public FacebookHandler(IMapper mapper, RequestModel requestModel)
         {
             _mapper = mapper;
+            _requestModel = requestModel;
+            facebookModel = _mapper.Map<FacebookModel>(_requestModel);
         }
 
-        public List<string> CreateListString(RequestModel request)
+        public List<string> CreateListString()
         {
-            throw new NotImplementedException();
+            List<string> stringList = new List<string>();
+            foreach (var item in facebookModel.Posts)
+            {
+                stringList.Add(item.Content);
+            }
+            return stringList;
         }
 
-        public string ToJson(RequestModel request)
+        public string ToJson()
         {
-            FacebookModel FacebookModel = _mapper.Map<FacebookModel>(request);
-            string deliveredJson = JsonSerializer.Serialize(FacebookModel);
+            //FacebookModel FacebookModel = _mapper.Map<FacebookModel>(_requestModel);
+            string deliveredJson = JsonSerializer.Serialize(facebookModel);
             return deliveredJson;
         }
     }

@@ -9,8 +9,8 @@ namespace BrainLab.Feeds_processing.Handlers
 {
     public interface INotificationHandler
     {
-        string ToJson(RequestModel request);
+        string ToJson();
 
-        List<string> CreateListString(RequestModel request);
+        List<string> CreateListString();
     }
 }
