@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrainLab.Feeds_processing.Models.BaseModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,15 +8,8 @@ using System.Threading.Tasks;
 
 namespace BrainLab.Feeds_processing.Models.Facebook
 {
-    public class FacebookModel
+    public class FacebookModel : RequestBase
     {
-        public string Id { get; set; }
-        public string Token { get; set; }
-        public string Source { get; set; }
-
-        [JsonPropertyName("careated_at")]
-        public string CreatedAt { get; set; }
-        public DateTime RecivedAt { get; set; } = DateTime.Now;
         public List<Post> Posts { get; set; }
     }
 }

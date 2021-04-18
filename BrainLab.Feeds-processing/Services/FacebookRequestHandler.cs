@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BrainLab.Feeds_processing.Services
 {
-    public class FacebookRequestHandler : IRequestHandler<FacebookModel>
+    public class FacebookRequestHandler : INotificationProcessService<FacebookModel>
     {
         private readonly IConfiguration _config;
         private readonly IHelperIO _helperIO;
@@ -88,7 +88,7 @@ namespace BrainLab.Feeds_processing.Services
             return response;
         }
 
-        public string ToObject(FacebookModel requestModel)
+        public string ToJson(FacebookModel requestModel)
         {
             throw new NotImplementedException();
         }

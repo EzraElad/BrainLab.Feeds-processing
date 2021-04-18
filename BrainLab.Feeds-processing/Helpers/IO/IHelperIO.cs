@@ -10,14 +10,11 @@ namespace BrainLab.Feeds_processing.Helpers.IO
         /// <summary>
         /// Checks if a directory exists in a specific path 
         /// </summary>
-        /// <param name="path"></param>
-        /// <returns></returns>
         bool IsDirectoryExists(string path);
 
         /// <summary>
         /// Check the highest number in a certain folder
         /// </summary>
-        /// <param name="path"></param>
         /// <returns>int with the value of the highest number if there is none returns 0</returns>
         int HighestNumberOfDirectories(string path);
 

@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace BrainLab.Feeds_processing.Services
 {
-    public interface IRequestHandler<T>
+    public interface INotificationProcessService<T>
     {
         ServiceResponse<string> Handle(T requestModel, string path);
 
-        string ToObject(T requestModel);
+        string ToJson(T requestModel);
     }
 }

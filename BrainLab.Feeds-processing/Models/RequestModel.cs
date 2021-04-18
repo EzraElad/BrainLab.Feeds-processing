@@ -1,4 +1,5 @@
-﻿using BrainLab.Feeds_processing.Models.Facebook;
+﻿using BrainLab.Feeds_processing.Models.BaseModels;
+using BrainLab.Feeds_processing.Models.Facebook;
 using BrainLab.Feeds_processing.Models.Twitter;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -12,15 +13,8 @@ using System.Threading.Tasks;
 
 namespace BrainLab.Feeds_processing.Models
 {
-    public class RequestModel
+    public class RequestModel : RequestBase
     {
-        public string Id { get; set; }
-        public string Token { get; set; }
-        public string Source { get; set; }
-
-        [JsonPropertyName("careated_at")]
-        public string CreatedAt { get; set; }
-        public DateTime RecivedAt { get; set; } = DateTime.Now;
         // Add here your new formats 
         public List<Post> Posts { get; set; }
         public List<Tweet> Tweets { get; set; }

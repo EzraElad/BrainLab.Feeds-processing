@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using BrainLab.Feeds_processing.Helpers.IO;
+using BrainLab.Feeds_processing.Helpers.ServiceProtector;
 using BrainLab.Feeds_processing.Models;
 using BrainLab.Feeds_processing.Models.Facebook;
 using BrainLab.Feeds_processing.Models.Twitter;
@@ -34,9 +35,11 @@ namespace BrainLab.Feeds_processing
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<IRequestHandler<FacebookModel>, FacebookRequestHandler>();
-            services.AddScoped<IRequestHandler<TwitterModel>, TwitterRequestHandler>();
-            //services.AddScoped<IRequestHandler<RequestModel>, RequestHandler>();
+            services.AddScoped<INotificationProcessService<FacebookModel>, FacebookRequestHandler>();
+            services.AddScoped<INotificationProcessService<TwitterModel>, TwitterRequestHandler>();
+            services.AddScoped<INotificationProcessService<RequestModel>, NotificationProcessService>();
+
+            services.AddSingleton<ServiceProtector>();
 
             services.AddScoped<IHelperIO, HelperIO>();
         }

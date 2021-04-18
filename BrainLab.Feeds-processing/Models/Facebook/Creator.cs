@@ -1,4 +1,4 @@
-﻿using BrainLab.Feeds_processing.Models.User;
+﻿using BrainLab.Feeds_processing.Models.BaseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

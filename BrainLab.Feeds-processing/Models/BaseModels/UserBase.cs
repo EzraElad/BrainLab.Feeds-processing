@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BrainLab.Feeds_processing.Models.User
+namespace BrainLab.Feeds_processing.Models.BaseModels
 {
     public class UserBase
     {
