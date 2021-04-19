@@ -35,7 +35,6 @@ namespace BrainLab.Feeds_processing.Handlers
 
         public string ToJson()
         {
-            //TwitterModel twitterModel = _mapper.Map<TwitterModel>(_requestModel);
             string deliveredJson = JsonSerializer.Serialize(twitterModel);
             return deliveredJson;
         }

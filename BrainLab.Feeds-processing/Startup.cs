@@ -36,8 +36,8 @@ namespace BrainLab.Feeds_processing
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddScoped<INotificationProcessService<FacebookModel>, FacebookRequestHandler>();
-            services.AddScoped<INotificationProcessService<TwitterModel>, TwitterRequestHandler>();
+            //services.AddScoped<INotificationProcessService<FacebookModel>, FacebookRequestHandler>();
+            //services.AddScoped<INotificationProcessService<TwitterModel>, TwitterRequestHandler>();
             services.AddScoped<INotificationProcessService<RequestModel>, NotificationProcessService>();
 
             services.AddSingleton<ServiceProtector>();

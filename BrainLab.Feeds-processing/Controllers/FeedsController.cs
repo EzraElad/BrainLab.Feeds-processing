@@ -30,7 +30,7 @@ namespace BrainLab.Feeds_processing.Controllers
 
 
         [HttpPost]
-        public IActionResult PostNotification(RequestModel request, [FromQuery] string configDirectory )
+        public async Task<IActionResult> PostNotification(RequestModel request, [FromQuery] string configDirectory )
         {
             try
             {
@@ -41,34 +41,12 @@ namespace BrainLab.Feeds_processing.Controllers
 
                 _serviceProtector.ProtectionCheck(request);
 
-                return Ok(_requestHandler.Handle(request, configDirectory));
+                return Ok(await _requestHandler.Handle(request, configDirectory));
             }
             catch(Exception ex)
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        [HttpPost("CountWords")]
-        public int CountWords(List<string> strList)
-        {
-            int sum = 0;
-
-            foreach (var str in strList)
-            {
-                if (String.IsNullOrEmpty(str))
-                {
-                    continue;
-                }
-                if(str.Length == 1)
-                {
-                    sum += 1;
-                    continue;
-                }
-                sum += str.Split(" ").Length;
-            }
-
-            return sum;
         }
     }
 }

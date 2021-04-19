@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BrainLab.Feeds_processing.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace BrainLab.Feeds_processing.Helpers.IO.WrapperIO
 {
     public interface IWrapperIO
     {
-        void CreateJson();
+        ServiceResponse<string> CreateJson();
 
-        void CreateSummaryJson();
+        Task CreateSummaryJson();
     }
 }

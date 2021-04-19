@@ -35,7 +35,6 @@ namespace BrainLab.Feeds_processing.Handlers
 
         public string ToJson()
         {
-            //FacebookModel FacebookModel = _mapper.Map<FacebookModel>(_requestModel);
             string deliveredJson = JsonSerializer.Serialize(facebookModel);
             return deliveredJson;
         }

@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30413.136
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainLab.Feeds-processing", "BrainLab.Feeds-processing\BrainLab.Feeds-processing.csproj", "{2E688F2B-E85F-436A-AAC2-6086943B06C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrainLab.Feeds-processing", "BrainLab.Feeds-processing\BrainLab.Feeds-processing.csproj", "{2E688F2B-E85F-436A-AAC2-6086943B06C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrainLab.WordProcess", "BrainLab.WordProcess\BrainLab.WordProcess.csproj", "{55221209-AC99-4332-9738-237FD2A06DAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BrainLab.WordProcess", "BrainLab.WordProcess\BrainLab.WordProcess.csproj", "{55221209-AC99-4332-9738-237FD2A06DAF}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{31EB7DC4-045E-4076-9701-98B1B83B3C60}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{55221209-AC99-4332-9738-237FD2A06DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55221209-AC99-4332-9738-237FD2A06DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55221209-AC99-4332-9738-237FD2A06DAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31EB7DC4-045E-4076-9701-98B1B83B3C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31EB7DC4-045E-4076-9701-98B1B83B3C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31EB7DC4-045E-4076-9701-98B1B83B3C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31EB7DC4-045E-4076-9701-98B1B83B3C60}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

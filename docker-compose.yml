@@ -1,0 +1,19 @@
+version: '3.4'
+
+services:
+  brainlab.feeds-processing:
+    image: ${DOCKER_REGISTRY-}brainlabfeedsprocessing
+    ports:
+        - "11223:44324" 
+    build:
+      context: .
+      dockerfile: BrainLab.Feeds-processing/Dockerfile
+
+  brainlab.wordprocess:
+    image: ${DOCKER_REGISTRY-}brainlabwordprocess
+    ports:
+        - "11224:44360"
+    build:
+      context: .
+      dockerfile: BrainLab.WordProcess/Dockerfile
+

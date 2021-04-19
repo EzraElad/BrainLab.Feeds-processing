@@ -9,8 +9,6 @@ namespace BrainLab.Feeds_processing.Services
 {
     public interface INotificationProcessService<T>
     {
-        ServiceResponse<string> Handle(T requestModel, string path);
-
-        string ToJson(T requestModel);
+        Task<ServiceResponse<string>> Handle(T requestModel, string path);
     }
 }
