@@ -4,6 +4,7 @@ using BrainLab.Feeds_processing.Models;
 using BrainLab.Feeds_processing.Models.Facebook;
 using BrainLab.Feeds_processing.Models.Twitter;
 using BrainLab.Feeds_processing.Services;
+using BrainLab.Feeds_processing.Services.LoggerService;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Concurrent;
@@ -20,12 +21,15 @@ namespace BrainLab.Feeds_processing.Controllers
     {
         private readonly INotificationProcessService<RequestModel> _requestHandler;
         private readonly ServiceProtector _serviceProtector;
+        private readonly LoggerServiceProvider _loggerService;
         public static ConcurrentDictionary<string, DateTime> CD = new ConcurrentDictionary<string, DateTime>();
         
-        public FeedsController(INotificationProcessService<RequestModel> requestHandler, ServiceProtector serviceProtector)
+        public FeedsController(INotificationProcessService<RequestModel> requestHandler
+                                , ServiceProtector serviceProtector, LoggerServiceProvider loggerService)
         {
             _requestHandler = requestHandler;
             _serviceProtector = serviceProtector;
+            _loggerService = loggerService;
         }
 
 
@@ -34,13 +38,17 @@ namespace BrainLab.Feeds_processing.Controllers
         {
             try
             {
+                _loggerService.Log("Got the request");
+                _loggerService.Log("Validate the model");
                 if (!ModelState.IsValid)
                 {
                     return BadRequest("Your request model is not valid");
                 }
-
+                _loggerService.Log("Model is valid");
+                _loggerService.Log("Check for identicle request");
                 _serviceProtector.ProtectionCheck(request);
 
+                _loggerService.Log("There is no duplication, may start proccesing");
                 return Ok(await _requestHandler.Handle(request, configDirectory));
             }
             catch(Exception ex)

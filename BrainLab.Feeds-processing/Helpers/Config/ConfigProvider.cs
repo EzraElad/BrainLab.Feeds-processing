@@ -17,6 +17,7 @@ namespace BrainLab.Feeds_processing.Helpers.Config
         {
             _config = config;
             DefaultDir = _config.GetValue<string>("DefaultDirectory");
+            CounterApiUrl = _config.GetValue<string>("CounterApiURL");
         }
 
     }

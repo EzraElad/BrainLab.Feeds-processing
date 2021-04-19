@@ -10,6 +10,7 @@ using BrainLab.Feeds_processing.Models;
 using BrainLab.Feeds_processing.Models.Facebook;
 using BrainLab.Feeds_processing.Models.Twitter;
 using BrainLab.Feeds_processing.Services;
+using BrainLab.Feeds_processing.Services.LoggerService;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -36,12 +37,11 @@ namespace BrainLab.Feeds_processing
             services.AddControllers();
             services.AddAutoMapper(typeof(Startup));
 
-            //services.AddScoped<INotificationProcessService<FacebookModel>, FacebookRequestHandler>();
-            //services.AddScoped<INotificationProcessService<TwitterModel>, TwitterRequestHandler>();
             services.AddScoped<INotificationProcessService<RequestModel>, NotificationProcessService>();
 
             services.AddSingleton<ServiceProtector>();
             services.AddSingleton<ConfigProvider>();
+            services.AddSingleton<LoggerServiceProvider>();
 
             services.AddScoped<IHelperIO, HelperIO>();
         }

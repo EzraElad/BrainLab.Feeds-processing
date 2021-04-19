@@ -30,19 +30,27 @@ namespace BrainLab.Feeds_processing.Helpers.IO
 
         public int HighestNumberOfDirectories(string path)
         {
-            var files = Directory.GetDirectories(path);
-            List<int> fileList = new List<int>();
+            // GetDirectories
+            try
+            {
+                string[] files = Directory.GetDirectories(path);
+                List<int> fileList = new List<int>();
 
-            if(files.Length == 0)
+                if(files.Length == 0)
+                {
+                    return 0;
+                }
+
+                foreach (var file in files)
+                {
+                    fileList.Add(Int32.Parse(Path.GetFileName(file)));
+                }
+                return fileList.Max();
+            }
+            catch
             {
                 return 0;
             }
-
-            foreach (var file in files)
-            {
-                fileList.Add(Int32.Parse(Path.GetFileName(file)));
-            }
-            return fileList.Max();
         }
 
         public bool IsDirectoryExists(string path)
